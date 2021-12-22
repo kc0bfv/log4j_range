@@ -3,7 +3,9 @@
 You may need to change the AWS profile in `blue.tf` to default, or whatever you have configured AWS with.  If you haven't configured aws, run `aws configure`.  Run the following commands:
 
 ```
-ssh-keygen -f key
+ssh-keygen -f blue_key
+ssh-keygen -f red_key
+ssh-keygen -f admin_key
 terraform init
 terraform apply
 ```

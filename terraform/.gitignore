@@ -1,5 +1,6 @@
-key
-key.pub
+red_key*
+blue_key*
+admin_key*
 terraform.tfstate
 terraform.tfstate.backup
 .terraform*

@@ -1,0 +1,26 @@
+---
+elastic_host:
+    hosts:
+        elastic_host_01:
+            ansible_host: ${elastic_host_private}
+            ansible_user: admin
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_private_key_file: ../terraform/${elastic_host_keyfile}
+            ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q admin@${jump_host_public} -i ../terraform/${jump_host_keyfile}"'
+
+kali_host:
+    hosts:
+        kali_host_01:
+            ansible_host: ${kali_host_private}
+            ansible_user: kali
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_private_key_file: ../terraform/${kali_host_keyfile}
+            ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q admin@${jump_host_public} -i ../terraform/${jump_host_keyfile}"'
+
+jump_host:
+    hosts:
+        jump_host_01:
+            ansible_host: ${jump_host_public}
+            ansible_user: admin
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_private_key_file: ../terraform/${jump_host_keyfile}

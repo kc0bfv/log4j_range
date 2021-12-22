@@ -1,0 +1,21 @@
+- name: Download the Elasticsearch Apt Keyring
+  get_url:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    dest: /usr/share/keyrings/elasticsearch.asc
+
+- name: Add Elasticsearch Repo to Apt
+  apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/elasticsearch.asc] https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+    filename: elasticsearch
+
+- name: Install Elasticsearch 7.16.0
+  apt:
+    name: elasticsearch=7.16.0
+    update_cache: yes
+
+- name: Start Elasticsearch Now and at Boot
+  systemd:
+    name: elasticsearch
+    state: started
+    enabled: yes

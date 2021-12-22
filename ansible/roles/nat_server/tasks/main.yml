@@ -1,0 +1,30 @@
+- name: Check IPv4 Forwarding
+  command: grep -q 1 /proc/sys/net/ipv4/ip_forward
+  register: ipv4fwdstatus
+  ignore_errors: yes
+
+- name: Enable IPv4 Forwarding
+  shell: echo 1 > /proc/sys/net/ipv4/ip_forward
+  when: ipv4fwdstatus.rc == 1
+
+- name: Enable Masquerade
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: ens5
+    jump: MASQUERADE
+
+- name: Forward Established
+  iptables:
+    chain: FORWARD
+    in_interface: ens5
+    out_interface: ens6
+    ctstate: RELATED,ESTABLISHED
+    jump: ACCEPT
+
+- name: Forward Outgoing
+  iptables:
+    chain: FORWARD
+    in_interface: ens6
+    out_interface: ens5
+    jump: ACCEPT

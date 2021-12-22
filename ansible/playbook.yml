@@ -1,0 +1,23 @@
+---
+- hosts: kali_host
+  become: yes
+  vars_files:
+    - server_secrets.enc
+  roles:
+    - kali
+
+- hosts: jump_host
+  become: yes
+  vars_files:
+    - server_secrets.enc
+  roles:
+    - nat_server
+
+- hosts: elastic_host
+  become: yes
+  vars_files:
+    - server_secrets.enc
+  roles:
+    - docker_server
+    - solr_server
+    #- elasticsearch
