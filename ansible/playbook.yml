@@ -5,19 +5,25 @@
     - server_secrets.enc
   roles:
     - nat_server
+    - docker_server
+    - guacamole_server
 
 - hosts: kali_host
   become: yes
   vars_files:
     - server_secrets.enc
   roles:
-    - kali
+    - jndi_server
+    - kali_desktop
+    - vnc_server
 
 - hosts: elastic_host
   become: yes
   vars_files:
     - server_secrets.enc
   roles:
+    - xfce_desktop
+    - vnc_server
     - docker_server
     - solr_server
     #- elasticsearch

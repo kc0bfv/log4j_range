@@ -2,6 +2,8 @@
   command: grep -q 1 /proc/sys/net/ipv4/ip_forward
   register: ipv4fwdstatus
   ignore_errors: yes
+  failed_when: ipv4fwdstatus.rc > 1 
+  changed_when: False
 
 - name: Enable IPv4 Forwarding
   shell: echo 1 > /proc/sys/net/ipv4/ip_forward

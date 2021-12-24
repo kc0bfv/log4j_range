@@ -1,0 +1,6 @@
+- name: Install Kali XFCE Desktop
+  apt:
+    name:
+      - kali-desktop-xfce
+    update_cache: yes
+    state: present

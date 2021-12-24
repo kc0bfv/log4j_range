@@ -1,0 +1,18 @@
+- name: Install Tightvnc
+  apt:
+    name:
+      - tightvncserver
+    update_cache: yes
+    state: present
+
+- name: Set VNC Password
+  become: true
+  become_user: "{{ansible_user}}"
+  shell:
+    cmd: echo '{{ansible_user_vnc_password}}' | vncpasswd -f > ~/.vnc/passwd
+    creates: /home/{{ansible_user}}/.vnc/passwd
+
+- name: Run VNC
+  become: true
+  become_user: "{{ansible_user}}"
+  command: tightvncserver

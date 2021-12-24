@@ -1,0 +1,6 @@
+- name: Install XFCE Desktop
+  apt:
+    name:
+      - task-xfce-desktop
+    update_cache: yes
+    state: present

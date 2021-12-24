@@ -1,0 +1,26 @@
+- name: Install Guacamole-Docker-Compose (GDC) Source
+  become: true
+  become_user: admin
+  git:
+    repo: https://github.com/boschkundendienst/guacamole-docker-compose.git
+    dest: /home/admin/guacamole-docker-compose
+
+- name: Run GDC Prepare
+  command:
+    chdir: /home/admin/guacamole-docker-compose
+    cmd: ./prepare.sh
+    creates: /home/admin/guacamole-docker-compose/prepare_ran_successfully
+  register: gdc_prepare
+
+- name: Create GDC Prepare Success if Needed
+  when: gdc_prepare.changed
+  file:
+    state: touch
+    path: /home/admin/guacamole-docker-compose/prepare_ran_successfully
+    modification_time: preserve
+    access_time: preserve
+
+- name: Run GDC
+  command:
+    chdir: /home/admin/guacamole-docker-compose
+    cmd: docker-compose up -d

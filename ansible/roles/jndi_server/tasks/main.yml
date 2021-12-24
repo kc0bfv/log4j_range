@@ -4,11 +4,15 @@
     update_cache: yes
 
 - name: Install Marshalsec Source
+  become: true
+  become_user: "{{ansible_user}}"
   git:
     repo: https://github.com/mbechler/marshalsec.git
-    dest: /home/kali/marshalsec
+    dest: /home/{{ansible_user}}/marshalsec
 
 - name: Copy Marshalsec Compiled
+  become: true
+  become_user: "{{ansible_user}}"
   copy:
     src: marshalsec-0.0.3-SNAPSHOT-all.jar
-    dest: /home/kali/marshalsec/marshalsec-0.0.3-SNAPSHOT-all.jar
+    dest: /home/{{ansible_user}}/marshalsec/marshalsec-0.0.3-SNAPSHOT-all.jar

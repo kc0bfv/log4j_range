@@ -60,6 +60,10 @@ resource "aws_instance" "kali_host" {
   key_name               = aws_key_pair.red_key.key_name
   depends_on             = [aws_internet_gateway.igw]
 
+  root_block_device {
+    volume_size = 24
+  }
+
   tags = {
     Environment = var.environ_tag
     EnvPortion  = var.red_environ_portion_tag
