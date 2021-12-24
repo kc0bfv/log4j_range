@@ -1,6 +1,8 @@
 # Vulnerable Services
 
-## solr 8.8.1
+## solr 8.8.0
+
+The docker image for solr 8.8.0 uses a version of Java new enough that it requires a system property be misconfigured to work...  It needs `com.sun.jndi.ldap.object.trustURLCodebase=true`.
 
 To exploit:
 

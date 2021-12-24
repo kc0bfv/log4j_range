@@ -3,7 +3,12 @@
     name: default-jdk
     update_cache: yes
 
-- name: Install Marshalsec
+- name: Install Marshalsec Source
   git:
     repo: https://github.com/mbechler/marshalsec.git
     dest: /home/kali/marshalsec
+
+- name: Copy Marshalsec Compiled
+  copy:
+    src: marshalsec-0.0.3-SNAPSHOT-all.jar
+    dest: /home/kali/marshalsec/marshalsec-0.0.3-SNAPSHOT-all.jar

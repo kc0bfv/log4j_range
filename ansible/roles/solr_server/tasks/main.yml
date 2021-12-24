@@ -1,8 +1,8 @@
 - name: Pull Docker Container
   command:
-    cmd: docker pull solr:8.8.1
+    cmd: docker pull solr:8.8.0
 
 - name: Run Docker Container
   command:
-    cmd: docker run -d -p 8983:8983 --name solr881 -t solr:8.8.1
+    cmd: docker run -d -p 8983:8983 --name solr880 -t solr:8.8.0 -a "-Dcom.sun.jndi.ldap.object.trustURLCodebase=true"
   ignore_errors: true
