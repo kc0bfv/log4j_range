@@ -17,7 +17,7 @@
     - kali_desktop
     - vnc_server
 
-- hosts: elastic_host
+- hosts: solr_host
   become: yes
   vars_files:
     - server_secrets.enc

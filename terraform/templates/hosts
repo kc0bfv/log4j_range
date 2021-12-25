@@ -1,12 +1,12 @@
 ---
-elastic_host:
+solr_host:
     hosts:
-        elastic_host_01:
-            ansible_host: ${elastic_host_private}
+        solr_host_01:
+            ansible_host: ${solr_host_private}
             ansible_user: admin
             ansible_user_vnc_password: ewkln324
             ansible_python_interpreter: /usr/bin/python3
-            ansible_ssh_private_key_file: ../terraform/${elastic_host_keyfile}
+            ansible_ssh_private_key_file: ../terraform/${solr_host_keyfile}
             ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q admin@${jump_host_public} -i ../terraform/${jump_host_keyfile}"'
 
 kali_host:
@@ -26,3 +26,6 @@ jump_host:
             ansible_user: admin
             ansible_python_interpreter: /usr/bin/python3
             ansible_ssh_private_key_file: ../terraform/${jump_host_keyfile}
+            freedns_ipv4_update_url: ${freedns_ipv4_update_url}
+            freedns_ipv6_update_url: ${freedns_ipv6_update_url}
+            freedns_domain_name: ${freedns_domain_name}

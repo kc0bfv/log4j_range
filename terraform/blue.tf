@@ -51,7 +51,7 @@ resource "aws_key_pair" "blue_key" {
   }
 }
 
-resource "aws_instance" "elastic_host" {
+resource "aws_instance" "solr_host" {
   ami                    = var.debian_ami
   instance_type          = var.medium_machine
   subnet_id              = aws_subnet.blue_admin_subnet.id
@@ -62,14 +62,14 @@ resource "aws_instance" "elastic_host" {
   tags = {
     Environment = var.environ_tag
     EnvPortion  = var.blue_environ_portion_tag
-    Name        = "elastic_host"
+    Name        = "solr_host"
   }
 }
 
 locals {
-  elastic_host_private_address = aws_instance.elastic_host.private_ip
+  solr_host_private_address = aws_instance.solr_host.private_ip
 }
 
-output "elastic_host_private_address" {
-  value = local.elastic_host_private_address
+output "solr_host_private_address" {
+  value = local.solr_host_private_address
 }

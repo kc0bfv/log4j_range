@@ -1,8 +1,38 @@
+- name: Setup Cron IPv4 Domain Update
+  cron:
+    name: "IPv4 Domain Update Reboot"
+    special_time: reboot
+    job: "sleep 49 ; wget -4 --no-check-certificate -O - {{freedns_ipv4_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v4.log 2>&1 &"
+
+- name: Setup Cron IPv4 Domain Update
+  cron:
+    name: "IPv4 Domain Update Minutes"
+    minute: "0,5,10,15,20,25,30,35,40,45,50,55"
+    job: "sleep 49 ; wget -4 --no-check-certificate -O - {{freedns_ipv4_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v4.log 2>&1 &"
+
+- name: Run IPv4 Domain Update
+  shell: "wget -4 --no-check-certificate -O - {{freedns_ipv4_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v4.log 2>&1"
+
+- name: Setup Cron IPv6 Domain Update
+  cron:
+    name: "IPv6 Domain Update Reboot"
+    special_time: reboot
+    job: "sleep 18 ; wget -6 --no-check-certificate -O - {{freedns_ipv6_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v6.log 2>&1 &"
+
+- name: Setup Cron IPv6 Domain Update
+  cron:
+    name: "IPv6 Domain Update Minutes"
+    minute: "0,5,10,15,20,25,30,35,40,45,50,55"
+    job: "sleep 18 ; wget -6 --no-check-certificate -O - {{freedns_ipv6_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v6.log 2>&1 &"
+
+- name: Run IPv6 Domain Update
+  shell: "wget -6 --no-check-certificate -O - {{freedns_ipv6_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v6.log 2>&1"
+
 - name: Install Guacamole-Docker-Compose (GDC) Source
   become: true
   become_user: admin
   git:
-    repo: https://github.com/boschkundendienst/guacamole-docker-compose.git
+    repo: https://github.com/kc0bfv/guacamole-docker-compose.git
     dest: /home/admin/guacamole-docker-compose
 
 - name: Run GDC Prepare

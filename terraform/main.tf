@@ -97,9 +97,35 @@ resource "aws_security_group" "allow_none" {
   tags = { Environment = var.environ_tag }
 }
 
-resource "aws_security_group" "allow_admin" {
-  name        = "allow_admin"
-  description = "Allow RDP and SSH"
+resource "aws_security_group" "allow_SSH" {
+  name        = "allow_SSH"
+  description = "Allow SSH"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description      = "SSH from anywhere"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    description      = "All Egress"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = { Environment = var.environ_tag }
+}
+
+resource "aws_security_group" "allow_RDP" {
+  name        = "allow_RDP"
+  description = "Allow RDP"
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
@@ -111,10 +137,53 @@ resource "aws_security_group" "allow_admin" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  egress {
+    description      = "All Egress"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = { Environment = var.environ_tag }
+}
+
+resource "aws_security_group" "allow_HTTPS" {
+  name        = "allow_HTTPS"
+  description = "Allow HTTPS"
+  vpc_id      = aws_vpc.vpc.id
+
   ingress {
-    description      = "SSH from anywhere"
-    from_port        = 22
-    to_port          = 22
+    description      = "HTTPS from anywhere"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    description      = "All Egress"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = { Environment = var.environ_tag }
+}
+
+resource "aws_security_group" "allow_HTTP" {
+  name        = "allow_HTTP"
+  description = "Allow HTTP"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description      = "HTTP from anywhere"
+    from_port        = 80
+    to_port          = 80
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]

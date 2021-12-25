@@ -49,7 +49,7 @@ resource "aws_instance" "jump_host" {
   instance_type          = var.small_machine
   subnet_id              = aws_subnet.admin_public_subnet.id
   ipv6_address_count     = 1
-  vpc_security_group_ids = [aws_security_group.allow_admin.id, aws_security_group.allow_all_local.id]
+  vpc_security_group_ids = [aws_security_group.allow_SSH.id, aws_security_group.allow_HTTP.id, aws_security_group.allow_HTTPS.id, aws_security_group.allow_all_local.id]
   key_name               = aws_key_pair.admin_key.key_name
   source_dest_check      = false
   depends_on             = [aws_internet_gateway.igw]

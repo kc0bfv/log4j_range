@@ -1,6 +1,7 @@
 red_key*
 blue_key*
 admin_key*
+secrets.tf
 terraform.tfstate
 terraform.tfstate.backup
 .terraform*
