@@ -1,3 +1,13 @@
+# Wat?
+
+This is a very small cloud hosted range for experimenting with the Log4Shell vulnerability.  It can automatically deploy the range to your AWS account, and configure it to contain:
+
+* Vulnerable services
+* Attack hosts (Kali)
+* A Guacamole server simplifying interaction with the range
+
+People connecting to your range will need nothing more than a webbrowser.  You will need Terraform and Ansible to deploy the range.
+
 # Deploying the Range
 
 First, deploy the infrastructure.  Check out `terraform/README.md`.
