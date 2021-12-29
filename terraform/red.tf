@@ -23,12 +23,12 @@ resource "aws_subnet" "red_private_subnet" {
 resource "aws_route_table" "red_private_route_table" {
   vpc_id = aws_vpc.vpc.id
   route {
-    cidr_block  = "0.0.0.0/0"
+    cidr_block           = "0.0.0.0/0"
     network_interface_id = aws_network_interface.jump_host_private_int.id
   }
   route {
-    ipv6_cidr_block = "::/0"
-    network_interface_id     = aws_network_interface.jump_host_private_int.id
+    ipv6_cidr_block      = "::/0"
+    network_interface_id = aws_network_interface.jump_host_private_int.id
   }
   tags = {
     Environment = var.environ_tag

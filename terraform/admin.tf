@@ -16,9 +16,9 @@ resource "aws_subnet" "admin_public_subnet" {
 }
 
 resource "aws_subnet" "admin_internal_subnet" {
-  vpc_id          = aws_vpc.vpc.id
-  cidr_block      = cidrsubnet(local.admin_ipv4_cidr_block, 6, 2)
-  ipv6_cidr_block = local.admin_internal_ipv6_cidr_block
+  vpc_id               = aws_vpc.vpc.id
+  cidr_block           = cidrsubnet(local.admin_ipv4_cidr_block, 6, 2)
+  ipv6_cidr_block      = local.admin_internal_ipv6_cidr_block
   availability_zone_id = aws_subnet.admin_public_subnet.availability_zone_id
 
   map_public_ip_on_launch = false
@@ -62,9 +62,9 @@ resource "aws_instance" "jump_host" {
 }
 
 resource "aws_network_interface" "jump_host_private_int" {
-  subnet_id = aws_subnet.admin_internal_subnet.id
-  security_groups = [aws_security_group.allow_everything.id]
-  source_dest_check      = false
+  subnet_id         = aws_subnet.admin_internal_subnet.id
+  security_groups   = [aws_security_group.allow_everything.id]
+  source_dest_check = false
   attachment {
     instance     = aws_instance.jump_host.id
     device_index = 1

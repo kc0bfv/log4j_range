@@ -42,7 +42,7 @@ jump_host:
                   pass: ${solr_host_vnc_password}
             guac_users:
                 - name: red_player
-                  pass: red_player_secret_password
+                  pass: ${guac_red_player_pass}
                   connections:
                     - kali
                     - solr
