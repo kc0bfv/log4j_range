@@ -4,7 +4,7 @@ solr_host:
         solr_host_01:
             ansible_host: ${solr_host_private}
             ansible_user: admin
-            ansible_user_vnc_password: ewkln324
+            ansible_user_vnc_password: ${solr_host_vnc_password}
             ansible_python_interpreter: /usr/bin/python3
             ansible_ssh_private_key_file: ../terraform/${solr_host_keyfile}
             ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q admin@${jump_host_public} -i ../terraform/${jump_host_keyfile}"'
@@ -14,7 +14,7 @@ kali_host:
         kali_host_01:
             ansible_host: ${kali_host_private}
             ansible_user: kali
-            ansible_user_vnc_password: m3mfF4kd
+            ansible_user_vnc_password: ${kali_host_vnc_password}
             ansible_python_interpreter: /usr/bin/python3
             ansible_ssh_private_key_file: ../terraform/${kali_host_keyfile}
             ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q admin@${jump_host_public} -i ../terraform/${jump_host_keyfile}"'
@@ -29,3 +29,20 @@ jump_host:
             freedns_ipv4_update_url: ${freedns_ipv4_update_url}
             freedns_ipv6_update_url: ${freedns_ipv6_update_url}
             freedns_domain_name: ${freedns_domain_name}
+            guac_domain_name: ${freedns_domain_name}
+            guac_admin_pass: ${guac_admin_pass}
+            guac_connections:
+                - name: kali
+                  addr: ${kali_host_private}
+                  port: 5901
+                  pass: ${kali_host_vnc_password}
+                - name: solr
+                  addr: ${solr_host_private}
+                  port: 5901
+                  pass: ${solr_host_vnc_password}
+            guac_users:
+                - name: red_player
+                  pass: red_player_secret_password
+                  connections:
+                    - kali
+                    - solr

@@ -11,7 +11,9 @@
     job: "sleep 49 ; wget -4 --no-check-certificate -O - {{freedns_ipv4_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v4.log 2>&1 &"
 
 - name: Run IPv4 Domain Update
-  shell: "wget -4 --no-check-certificate -O - {{freedns_ipv4_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v4.log 2>&1"
+  shell:
+    cmd: "wget -4 --no-check-certificate -O - {{freedns_ipv4_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v4.log 2>&1"
+    warn: false
 
 - name: Setup Cron IPv6 Domain Update
   cron:
@@ -26,7 +28,9 @@
     job: "sleep 18 ; wget -6 --no-check-certificate -O - {{freedns_ipv6_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v6.log 2>&1 &"
 
 - name: Run IPv6 Domain Update
-  shell: "wget -6 --no-check-certificate -O - {{freedns_ipv6_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v6.log 2>&1"
+  shell:
+    cmd: "wget -6 --no-check-certificate -O - {{freedns_ipv6_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v6.log 2>&1"
+    warn: false
 
 - name: Install Guacamole-Docker-Compose (GDC) Source
   become: true
@@ -54,3 +58,22 @@
   command:
     chdir: /home/admin/guacamole-docker-compose
     cmd: docker-compose up -d
+
+- name: Deploy GuacamoleREST Config Tool
+  become: true
+  become_user: admin
+  git:
+    repo: https://github.com/kc0bfv/guacamoleREST.git
+    dest: /home/admin/guacamoleREST
+
+- name: Deploy GuacamoleREST Command File
+  become: true
+  become_user: admin
+  template:
+    src: guac_rest_cmd_file
+    dest: /home/admin/guacamoleREST/cmd_file
+
+- name: Run GuacamoleREST Config
+  become: true
+  become_user: admin
+  shell: /home/admin/guacamoleREST/guacREST.py /home/admin/guacamoleREST/cmd_file

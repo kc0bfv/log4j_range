@@ -1,0 +1,18 @@
+{
+    "server": "https://{{guac_domain_name}}",
+    "admin_user": "guacadmin",
+    "initial_admin_pass": "guacadmin",
+    "desired_admin_pass": "{{guac_admin_pass}}",
+    "commands": [
+        {% for conn in guac_connections %}
+            ["add_vnc_connection", "{{conn.name}}", "{{conn.addr}}", "{{conn.port}}", "{{conn.pass}}"],
+        {% endfor %}
+        {% for user in guac_users %}
+            ["add_user", "{{user.name}}", "{{user.pass}}"],
+            {% for conn in user.connections %}
+                ["pair_user_connection", "{{user.name}}", "{{conn}}"],
+            {% endfor %}
+        {% endfor %}
+        ["nop"]
+    ]
+}

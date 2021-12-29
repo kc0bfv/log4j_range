@@ -11,6 +11,9 @@ resource "local_file" "build_ansible_hosts_file" {
       freedns_ipv4_update_url = var.freedns_ipv4_update_url,
       freedns_ipv6_update_url = var.freedns_ipv6_update_url,
       freedns_domain_name = var.freedns_domain_name,
+      solr_host_vnc_password = var.solr_host_vnc_password,
+      kali_host_vnc_password = var.kali_host_vnc_password,
+      guac_admin_pass = var.guac_admin_pass,
     }
   )
   depends_on = [

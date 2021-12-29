@@ -5,6 +5,14 @@
     update_cache: yes
     state: present
 
+- name: Create VNC Config Directory
+  become: true
+  become_user: "{{ansible_user}}"
+  file:
+    path: /home/{{ansible_user}}/.vnc
+    state: directory
+    mode: 0700
+
 - name: Set VNC Password
   become: true
   become_user: "{{ansible_user}}"
@@ -12,7 +20,16 @@
     cmd: echo '{{ansible_user_vnc_password}}' | vncpasswd -f > ~/.vnc/passwd
     creates: /home/{{ansible_user}}/.vnc/passwd
 
+- name: Change VNC Password File Mode
+  become: true
+  become_user: "{{ansible_user}}"
+  file:
+    path: /home/{{ansible_user}}/.vnc/passwd
+    mode: 0600
+
 - name: Run VNC
   become: true
   become_user: "{{ansible_user}}"
-  command: tightvncserver
+  shell:
+    cmd: nohup tightvncserver :1 | echo "Already running"
+    chdir: /home/{{ansible_user}}
