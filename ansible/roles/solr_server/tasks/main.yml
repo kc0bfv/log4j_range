@@ -3,4 +3,3 @@
 
 - name: Run Docker Container
   shell: docker start solr880 || docker run -d -p 8983:8983 --name solr880 -t solr:8.8.0 -a "-Dcom.sun.jndi.ldap.object.trustURLCodebase=true"
-  ignore_errors: true

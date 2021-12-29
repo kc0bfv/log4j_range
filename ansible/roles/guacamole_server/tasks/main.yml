@@ -76,4 +76,4 @@
 - name: Run GuacamoleREST Config
   become: true
   become_user: admin
-  shell: /home/admin/guacamoleREST/guacREST.py /home/admin/guacamoleREST/cmd_file
+  shell: /home/admin/guacamoleREST/guacREST.py --delay /home/admin/guacamoleREST/cmd_file

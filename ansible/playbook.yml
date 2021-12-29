@@ -26,4 +26,5 @@
     - vnc_server
     - docker_server
     - solr_server
+    - jetty_server
     #- elasticsearch

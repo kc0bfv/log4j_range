@@ -1,0 +1,5 @@
+- name: Pull Docker Container
+  command: docker pull kc0bfv/vulnerablejettylog4shell:latest
+
+- name: Run Docker Container
+  shell: docker start jetty || docker run -d -p 80:8080 --name jetty -t kc0bfv/vulnerablejettylog4shell

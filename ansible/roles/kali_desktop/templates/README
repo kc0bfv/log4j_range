@@ -1,0 +1,5 @@
+There's an Apache Solr and Jetty server located at {{hostvars["solr_host_01"]["ansible_host"]}}, at ports 8983 and 80 respectively.
+
+You can find more info about exploiting these services at https://github.com/kc0bfv/log4j_range
+
+The marshalsec directory and Log4JCallback.java files might be useful.

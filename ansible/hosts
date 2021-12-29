@@ -1,0 +1,48 @@
+---
+solr_host:
+    hosts:
+        solr_host_01:
+            ansible_host: 10.18.66.139
+            ansible_user: admin
+            ansible_user_vnc_password: ewkln324
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_private_key_file: ../terraform/blue_key
+            ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q admin@52.15.72.27 -i ../terraform/admin_key"'
+
+kali_host:
+    hosts:
+        kali_host_01:
+            ansible_host: 10.18.244.157
+            ansible_user: kali
+            ansible_user_vnc_password: m3mfF4kd
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_private_key_file: ../terraform/red_key
+            ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q admin@52.15.72.27 -i ../terraform/admin_key"'
+
+jump_host:
+    hosts:
+        jump_host_01:
+            ansible_host: 52.15.72.27
+            ansible_user: admin
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_private_key_file: ../terraform/admin_key
+            freedns_ipv4_update_url: http://sync.afraid.org/u/vekPDoRtTm3zakL4qMn2k7HL/
+            freedns_ipv6_update_url: http://v6.sync.afraid.org/u/mKpG9jLvNvf2jHQ5md2AgstW/
+            freedns_domain_name: log4jrange.lee.mx
+            guac_domain_name: log4jrange.lee.mx
+            guac_admin_pass: lnk3Ansdlk3nA
+            guac_connections:
+                - name: kali
+                  addr: 10.18.244.157
+                  port: 5901
+                  pass: m3mfF4kd
+                - name: solr
+                  addr: 10.18.66.139
+                  port: 5901
+                  pass: ewkln324
+            guac_users:
+                - name: red_player
+                  pass: red_player_secret_password
+                  connections:
+                    - kali
+                    - solr

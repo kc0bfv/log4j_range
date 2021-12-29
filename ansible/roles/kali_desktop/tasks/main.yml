@@ -4,3 +4,15 @@
       - kali-desktop-xfce
     update_cache: yes
     state: present
+
+- name: Copy over the README
+  become: true
+  become_user: "{{ansible_user}}"
+  template:
+    src: README
+    dest: /home/{{ansible_user}}/Desktop/README
+
+- name: Copy over the Log4JCallback.java
+  copy:
+    src: Log4JCallback.java
+    dest: /home/{{ansible_user}}/Log4JCallback.java
