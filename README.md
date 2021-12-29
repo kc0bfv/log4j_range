@@ -14,6 +14,10 @@ First, deploy the infrastructure.  Check out `terraform/README.md`.
 
 Then, configure it.  Check out `ansible/README.md`.
 
+## Important Note About Multiple Deployments
+
+The Guac server gets a LetsEncrypt certificate, and there are rate limits on certificates...  https://letsencrypt.org/docs/rate-limits/  For instance if you deploy the range, then destroy it, five times, you've used your allocation for a week for the domain name you're using.
+
 # Connecting to the Range
 
 A Guacamole server will be available at the domain you setup when deploying the infrastructure.  It'll even have a nice Let's Encrypt cert, so hit it at https.
