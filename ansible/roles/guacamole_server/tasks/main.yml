@@ -34,46 +34,62 @@
 
 - name: Install Guacamole-Docker-Compose (GDC) Source
   become: true
-  become_user: admin
+  become_user: "{{ansible_user}}"
   git:
     repo: https://github.com/kc0bfv/guacamole-docker-compose.git
-    dest: /home/admin/guacamole-docker-compose
+    dest: /home/{{ansible_user}}/guacamole-docker-compose
+
+- name: Replace GDC Nginx Server Name
+  become: true
+  become_user: "{{ansible_user}}"
+  lineinfile:
+    path: /home/{{ansible_user}}/guacamole-docker-compose/nginx_user_conf.d/reverse_proxy.conf
+    regexp: 'server_name'
+    line: "server_name {{freedns_domain_name}};"
+
+- name: Replace GDC Certbot Email Address
+  become: true
+  become_user: "{{ansible_user}}"
+  lineinfile:
+    path: /home/{{ansible_user}}/guacamole-docker-compose/docker-compose.yml
+    regexp: 'CERTBOT_EMAIL'
+    line: "     CERTBOT_EMAIL: {{freedns_email_addr}}"
 
 - name: Run GDC Prepare
   command:
-    chdir: /home/admin/guacamole-docker-compose
+    chdir: /home/{{ansible_user}}/guacamole-docker-compose
     cmd: ./prepare.sh
-    creates: /home/admin/guacamole-docker-compose/prepare_ran_successfully
+    creates: /home/{{ansible_user}}/guacamole-docker-compose/prepare_ran_successfully
   register: gdc_prepare
 
 - name: Create GDC Prepare Success if Needed
   when: gdc_prepare.changed
   file:
     state: touch
-    path: /home/admin/guacamole-docker-compose/prepare_ran_successfully
+    path: /home/{{ansible_user}}/guacamole-docker-compose/prepare_ran_successfully
     modification_time: preserve
     access_time: preserve
 
 - name: Run GDC
   command:
-    chdir: /home/admin/guacamole-docker-compose
+    chdir: /home/{{ansible_user}}/guacamole-docker-compose
     cmd: docker-compose up -d
 
 - name: Deploy GuacamoleREST Config Tool
   become: true
-  become_user: admin
+  become_user: "{{ansible_user}}"
   git:
     repo: https://github.com/kc0bfv/guacamoleREST.git
-    dest: /home/admin/guacamoleREST
+    dest: /home/{{ansible_user}}/guacamoleREST
 
 - name: Deploy GuacamoleREST Command File
   become: true
-  become_user: admin
+  become_user: "{{ansible_user}}"
   template:
     src: guac_rest_cmd_file
-    dest: /home/admin/guacamoleREST/cmd_file
+    dest: /home/{{ansible_user}}/guacamoleREST/cmd_file
 
 - name: Run GuacamoleREST Config
   become: true
-  become_user: admin
-  shell: /home/admin/guacamoleREST/guacREST.py --delay /home/admin/guacamoleREST/cmd_file
+  become_user: "{{ansible_user}}"
+  shell: /home/{{ansible_user}}/guacamoleREST/guacREST.py --delay /home/{{ansible_user}}/guacamoleREST/cmd_file
