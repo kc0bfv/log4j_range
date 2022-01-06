@@ -15,8 +15,8 @@ if __name__ == "__main__":
     host_info = json.loads(host_info_j)
 
     if "ansible_host" not in host_info:
-        print("No host address found")
-        exit(1)
+        # No host address found - using hostname
+        host_info["ansible_host"] = host
     elif "ansible_user" not in host_info:
         print("No user address found")
         exit(1)
