@@ -5,6 +5,14 @@
     update_cache: yes
     state: present
 
+- name: Create Desktop Directory
+  become: true
+  become_user: "{{ansible_user}}"
+  file:
+    path: /home/{{ansible_user}}/Desktop
+    state: directory
+    mode: 0755
+
 - name: Copy over the README
   become: true
   become_user: "{{ansible_user}}"
