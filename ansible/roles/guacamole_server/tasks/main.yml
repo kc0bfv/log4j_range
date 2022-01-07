@@ -32,12 +32,18 @@
     cmd: "wget -6 --no-check-certificate -O - {{freedns_ipv6_update_url}} >> /tmp/freedns_log4jrange_lee_mx_v6.log 2>&1"
     warn: false
 
-- name: Install Guacamole-Docker-Compose (GDC) Source
+- name: Determine if Guacamole-Docker-Compose (GDC) Source Should be Downloaded
+  stat:
+    path: /home/{{ansible_user}}/guacamole-docker-compose/nginx_user_conf.d/reverse_proxy.conf
+  register: gdc_present
+
+- name: Download Guacamole-Docker-Compose (GDC) Source if Needed
   become: true
   become_user: "{{ansible_user}}"
   git:
     repo: https://github.com/kc0bfv/guacamole-docker-compose.git
     dest: /home/{{ansible_user}}/guacamole-docker-compose
+  when: gdc_present.stat.exists == false
 
 - name: Replace GDC Nginx Server Name
   become: true
