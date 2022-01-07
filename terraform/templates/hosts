@@ -29,7 +29,7 @@ jump_host:
             freedns_ipv4_update_url: ${freedns_ipv4_update_url}
             freedns_ipv6_update_url: ${freedns_ipv6_update_url}
             freedns_domain_name: ${freedns_domain_name}
-            freedns_email_addr: kc0bfv@gmail.com
+            freedns_email_addr: ${freedns_email}
             guac_domain_name: ${freedns_domain_name}
             guac_admin_pass: ${guac_admin_pass}
             guac_connections:
